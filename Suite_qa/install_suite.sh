@@ -33,7 +33,8 @@ else
 	echo  "Git is installed"
 fi
 
-if [ $_git_Install q 0 ]; then
+if [ $_git_Install -eq 0 ]; then
+	cd $HOME
 	echo  "Installing GIT"
 	sudo apt-get install git
 fi
@@ -52,7 +53,8 @@ else
         echo  "Guake is installed"
 fi
 
-if [ $_guake_Install q 0 ]; then
+if [ $_guake_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing Guake"
         sudo apt-get install guake -y
 fi
@@ -70,7 +72,8 @@ else
         echo  "Maven is installed"
 fi
 
-if [ $_maven_Install q 0 ]; then
+if [ $_maven_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing Maven"
         sudo apt-get install maven
 fi
@@ -88,7 +91,8 @@ else
         echo  "Gradle is installed"
 fi
 
-if [ $_gradle_Install q 0 ]; then
+if [ $_gradle_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing Gradle"
         sudo apt-get install gradle
 fi
@@ -106,7 +110,8 @@ else
         echo  "mysql is installed"
 fi
 
-if [ $_mysql_Install q 0 ]; then
+if [ $_mysql_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing mysql"
         sudo apt-get install mysql-client
 fi
@@ -124,7 +129,8 @@ else
         echo  "htop is installed"
 fi
 
-if [ $_htop_Install q 0 ]; then
+if [ $_htop_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing htop"
         sudo apt-get install htop
 fi
@@ -142,7 +148,8 @@ else
         echo  "filezilla is installed"
 fi
 
-if [ $_file_Install q 0 ]; then
+if [ $_file_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing filezilla"
         sudo apt-get install filezilla
 fi
@@ -160,7 +167,8 @@ else
         echo  "redis is installed"
 fi
 
-if [ $_redis_Install q 0 ]; then
+if [ $_redis_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing redis"
         sudo apt-get install redis-tools
 fi
@@ -178,7 +186,8 @@ else
         echo  "Docker is installed"
 fi
 
-if [ $_docker_Install q 0 ]; then
+if [ $_docker_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing Docker"
 	sudo usermod -a -G docker $USER
         sudo apt update
@@ -204,7 +213,8 @@ else
         echo  "Docker compose is installed"
 fi
 
-if [ $_dockercompose_Install q 0 ]; then
+if [ $_dockercompose_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing Docker compose"
 	sudo curl -L https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
     	sudo chmod +x /usr/local/bin/docker-compose
@@ -223,7 +233,8 @@ else
         echo  "Aws Cli compose is installed"
 fi
 
-if [ $_dockercompose_Install q 0 ]; then
+if [ $_dockercompose_Install -eq 0 ]; then
+	cd $HOME
         echo  "Installing aws cli"
         curl "https://awscli.amazonaws.com/awsclixe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
