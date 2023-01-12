@@ -241,4 +241,65 @@ if [ $_dockercompose_Install -eq 0 ]; then
 	sudo ./aws/install
 fi
 
+# Install Java
+#Validation
+echo "Validating Java"
+if type -p java; then
+    _java=java
+else [ -n "$JAVA_HOME" ] && [ -x "$JAVA_HOME/bin/java" ];
+    _java="$JAVA_HOME/bin/java"
+fi
 
+if [ "$_java" ]; then
+    JAVA_VER=$(java -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*".*/\1\2/p;')
+    if (( $(echo "$JAVA_VER > 1.8" | bc -l) )); then
+        _java_Install=1
+
+    else
+        _java_Install=0
+    fi
+else
+    _java_Install=0
+
+fi
+
+#Install Java 11
+if [ $_java_Install -eq 0 ] ; then
+    cd $HOME
+    sudo add-apt-repository ppa:openjdk-r/ppa -y
+    sudo apt-get update
+    sudo apt install openjdk-8-jdk -y
+fi
+
+#Validation
+if type -p java; then
+    _java=java    
+else [[ -n "$JAVA_HOME" ]] && [[ -x "$JAVA_HOME/bin/java" ]];    
+    _java="$JAVA_HOME/bin/java"
+fi
+
+if [[ "$_java" ]]; then
+    JAVA_VER=$(java -version 2>&1 | sed -n ';s/.* version "\(.*\)\.\(.*\)\..*".*/\1\2/p;')
+else
+    exit
+fi
+
+
+# Install Liquibase
+echo "Validating Liquibase"
+# Validate if you have it installed liquibase
+
+if ! command -v liquibase --version 1> /dev/null; then
+        _liquibase_Install=0
+        echo  "Docker compose is not installed and needs to be installed"
+
+else
+        _liquibase_Install=1
+        echo  "Docker compose is installed"
+fi
+
+if [ $_liquibase_Install -eq 0 ]; then
+	cd $HOME
+        echo  "Installing liquibase"
+	sudo snap install liquibase
+fi
