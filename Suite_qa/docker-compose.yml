@@ -1,0 +1,163 @@
+version: '3.1'
+services:
+  db:
+      image: mysql:5.7.25
+      container_name: db
+      environment:
+        - MYSQL_ROOT_PASSWORD=1Qaz2wsx--
+        - MYSQL_DATABASE=tutorial
+        - MYSQL_ROOT_HOST=%
+      ports:
+        - 3306:3306
+      healthcheck:
+        test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+        timeout: 20s
+        retries: 10
+
+  redis:
+    image: redis
+    container_name: redis
+    ports:
+      - 6379:6379
+
+  users-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/users-api:v2.2.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB=5
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - REDIS_SERVER=localhost
+      - REDIS_PORT=6379
+      - PROJECT_CACHE_TYPE=redis
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - users-api-2.2.0-SNAPSHOT.jar
+      - '--server.port=8087' 
+      
+  credentials-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/credentials-api:v2.1.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB=5
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - PROJECT_CACHE_TYPE=redis
+      - server.servlet.context-path=/credentials-api
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - credentials-api-2.1.0-SNAPSHOT.jar
+      - '--server.port=8088'   
+      
+  transactions-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/transactions-api:v2.2.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - REDIS_SERVER=127.0.0.1
+      - REDIS_PORT=6379
+      - PROJECT_CACHE_TYPE=redis
+      - server.servlet.context-path=/transactions-api
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - transactions-api-2.2.0-SNAPSHOT.jar
+      - '--server.port=8085'     
+      
+  clients-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/clients-api:v2.2.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB=5
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - REDIS_SERVER=127.0.0.1
+      - REDIS_PORT=6379
+      - PROJECT_CACHE_TYPE=redis
+      - server.servlet.context-path=/clients-api
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - clients-api-2.2.0.jar
+      - '--server.port=8098'
+
+  accounts-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/accounts-api:v3.1.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB=5
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - REDIS_SERVER=127.0.0.1
+      - REDIS_PORT=6379
+      - PROJECT_CACHE_TYPE=redis
+      - server.servlet.context-path=/accounts-api
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - accounts-api-3.1.0.jar
+      - '--server.port=8078'
+      
+  catalogs-api:
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/catalogs-api:v2.2.0'
+    environment:
+      - spring.profiles.active=qa
+      - java.awt.headless=false
+      - MAX_POOL_DB=5
+      - PROJECT_SQL_SERVER=localhost
+      - PROJECT_SQL_PORT=3306
+      - PROJECT_SQL_DATABASE=tutorial
+      - PROJECT_SQL_USER=root
+      - PROJECT_SQL_PASSWORD=1Qaz2wsx--
+      - PROJECT_TIME_ZONE=America/Bogota
+      - REDIS_SERVER=127.0.0.1
+      - REDIS_PORT=6379
+      - PROJECT_CACHE_TYPE=redis
+    network_mode: host
+    entrypoint:
+      - java
+      - '-jar'
+      - catalogs-api-2.2.0-SNAPSHOT.jar
+      - '--server.port=8097' 
+
+  dozzle:
+      container_name: dozzle
+      image: amir20/dozzle:latest
+      volumes:
+        - /var/run/docker.sock:/var/run/docker.sock
+      ports:
+        - 9999:8080
