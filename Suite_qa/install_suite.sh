@@ -10,176 +10,176 @@ echo "  ___ _         _ _    _ _ _ _          ___ ___ _     "
 
 function_logo_flex
 
-echo -e "******************************************************************************************************************************"
-echo -e "------------------------------------------------Installer local enviroment QA-------------------------------------------------"
-echo -e "******************************************************************************************************************************"
+echo  "******************************************************************************************************************************"
+echo  "------------------------------------------------Installer local enviroment QA-------------------------------------------------"
+echo  "******************************************************************************************************************************"
 
 
-echo -e "******************************************************************************************************************************"
-echo -e "------------------------------------------------Intalling prerequisites-------------------------------------------------------"
-echo -e "******************************************************************************************************************************"
+echo  "******************************************************************************************************************************"
+echo  "------------------------------------------------Intalling prerequisites-------------------------------------------------------"
+echo  "******************************************************************************************************************************"
 
 
 # install GIT
-echo -e "Installing GIT"
+echo  "Validating GIT"
 # Validate if you have it installed GIT
 
-if ! command -v git --version &> /dev/null; then
+if ! command -v git --version 2> /dev/null; then
 	_git_Install=0
-	echo -e "GIT is not installed and needs to be installed"
+	echo  "GIT is not installed and needs to be installed"
 
 else
 	_git_Install=1
-	echo -e "Git is installed"
+	echo  "Git is installed"
 fi
 
-if [$_git_Install -eq 0]; then
-	echo -e "Installing GIT"
+if [ $_git_Install q 0 ]; then
+	echo  "Installing GIT"
 	sudo apt-get install git
 fi
 
 
 # install Guake
-echo -e "InstallingGuake"
+echo  "Validating Guake"
 # Validate if you have it installed Guake
 
-if ! command -v guake --version &> /dev/null; then
+if ! command -v guake --version 2> /dev/null; then
         _guake_Install=0
-        echo -e "Guake is not installed and needs to be installed"
+        echo  "Guake is not installed and needs to be installed"
 
 else
         _guake_Install=1
-        echo -e "Guake is installed"
+        echo  "Guake is installed"
 fi
 
-if [$_git_Install -eq 0]; then
-        echo -e "Installing Guake"
+if [ $_guake_Install q 0 ]; then
+        echo  "Installing Guake"
         sudo apt-get install guake -y
 fi
 
 # install maven
-echo -e "Installing maven"
+echo  "validating  maven"
 # Validate if you have it installed maven
 
-if ! command -v mvn -version &> /dev/null; then
+if ! command -v mvn -version 1> /dev/null; then
         _maven_Install=0
-        echo -e "Maven is not installed and needs to be installed"
+        echo  "Maven is not installed and needs to be installed"
 
 else
         _maven_Install=1
-        echo -e "Maven is installed"
+        echo  "Maven is installed"
 fi
 
-if [$_maven_Install -eq 0]; then
-        echo -e "Installing Maven"
+if [ $_maven_Install q 0 ]; then
+        echo  "Installing Maven"
         sudo apt-get install maven
 fi
 
 # install gradle
-echo -e "Installing gradle"
+echo  "Validating gradle"
 # Validate if you have it installed maven
 
-if ! command -v gradle --version &> /dev/null; then
+if ! command -v gradle --version 1> /dev/null; then
         _gradle_Install=0
-        echo -e "Gradle is not installed and needs to be installed"
+        echo  "Gradle is not installed and needs to be installed"
 
 else
         _gradle_Install=1
-        echo -e "Gradle is installed"
+        echo  "Gradle is installed"
 fi
 
-if [$_gradle_Install -eq 0]; then
-        echo -e "Installing Gradle"
+if [ $_gradle_Install q 0 ]; then
+        echo  "Installing Gradle"
         sudo apt-get install gradle
 fi
 
 # install mysql-client
-echo -e "Installing mysql-client"
+echo  "Validating mysql-client"
 # Validate if you have it installed mysql-client
 
-if ! command -v mysql --version &> /dev/null; then
+if ! command -v mysql --version 2> /dev/null; then
         _mysql_Install=0
-        echo -e "mysql is not installed and needs to be installed"
+        echo  "mysql is not installed and needs to be installed"
 
 else
         _mysql_Install=1
-        echo -e "mysql is installed"
+        echo  "mysql is installed"
 fi
 
-if [$_mysql_Install -eq 0]; then
-        echo -e "Installing mysql"
+if [ $_mysql_Install q 0 ]; then
+        echo  "Installing mysql"
         sudo apt-get install mysql-client
 fi
 
 # install htop
-echo -e "Installing htop"
+echo  "Validating htop"
 # Validate if you have it installed htop
 
-if ! command -v htop --version &> /dev/null; then
+if ! command -v htop --version 2> /dev/null; then
         _htop_Install=0
-        echo -e "htop is not installed and needs to be installed"
+        echo  "htop is not installed and needs to be installed"
 
 else
         _htop_Install=1
-        echo -e "htop is installed"
+        echo  "htop is installed"
 fi
 
-if [$_htop_Install -eq 0]; then
-        echo -e "Installing htop"
+if [ $_htop_Install q 0 ]; then
+        echo  "Installing htop"
         sudo apt-get install htop
 fi
 
 # install filezilla
-echo -e "Installing filezilla"
+echo  "Validating filezilla"
 # Validate if you have it installed filezilla
 
-if ! command -v filezilla --version &> /dev/null; then
+if ! command -v filezilla --version 2> /dev/null; then
         _file_Install=0
-        echo -e "filezilla is not installed and needs to be installed"
+        echo  "filezilla is not installed and needs to be installed"
 
 else
         _file_Install=1
-        echo -e "filezilla is installed"
+        echo  "filezilla is installed"
 fi
 
-if [$_file_Install -eq 0]; then
-        echo -e "Installing filezilla"
+if [ $_file_Install q 0 ]; then
+        echo  "Installing filezilla"
         sudo apt-get install filezilla
 fi
 
 # install redis
-echo -e "Installing redis"
+echo  "Validating redis"
 # Validate if you have it installed redis
 
-if ! command -v redis-cli --version &> /dev/null; then
+if ! command -v redis-cli --version 2> /dev/null; then
         _redis_Install=0
-        echo -e "redis is not installed and needs to be installed"
+        echo  "redis is not installed and needs to be installed"
 
 else
         _redis_Install=1
-        echo -e "redis is installed"
+        echo  "redis is installed"
 fi
 
-if [$_redis_Install -eq 0]; then
-        echo -e "Installing redis"
+if [ $_redis_Install q 0 ]; then
+        echo  "Installing redis"
         sudo apt-get install redis-tools
 fi
 
 # Install Docker
-echo -e "Installing Docker"
+echo  "Validating Docker"
 # Validate if you have it installed Docker
 
-if ! command -v docker --version &> /dev/null; then
+if ! command -v docker --version 2> /dev/null; then
         _docker_Install=0
-        echo -e "Docker is not installed and needs to be installed"
+        echo  "Docker is not installed and needs to be installed"
 
 else
         _docker_Install=1
-        echo -e "Docker is installed"
+        echo  "Docker is installed"
 fi
 
-if [$_docker_Install -eq 0]; then
-        echo -e "Installing Docker"
+if [ $_docker_Install q 0 ]; then
+        echo  "Installing Docker"
 	sudo usermod -a -G docker $USER
         sudo apt update
    	 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
@@ -192,47 +192,42 @@ fi
 
 
 # Install Docker Compose
-echo -e "Installing Docker Compose"
+echo  "Validating Docker Compose"
 # Validate if you have it installed Docker Compose
 
-if ! command -v docker-compose --version &> /dev/null; then
+if ! command -v docker-compose --version 2> /dev/null; then
         _dockercompose_Install=0
-        echo -e "Docker compose is not installed and needs to be installed"
+        echo  "Docker compose is not installed and needs to be installed"
 
 else
         _dockercompose_Install=1
-        echo -e "Docker compose is installed"
+        echo  "Docker compose is installed"
 fi
 
-if [$_dockercompose_Install -eq 0]; then
-        echo -e "Installing Docker compose"
+if [ $_dockercompose_Install q 0 ]; then
+        echo  "Installing Docker compose"
 	sudo curl -L https://github.com/docker/compose/releases/download/v2.5.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
     	sudo chmod +x /usr/local/bin/docker-compose
 fi
 
 # Install AWS CLI
-echo -e "Installing AWS CLI"
+echo  "Validating AWS CLI"
 # Validate if you have it installed Docker Compose
 
-if ! command -v aws --version &> /dev/null; then
+if ! command -v aws --version 2> /dev/null; then
         _aws_Install=0
-        echo -e "Aws cli is not installed and needs to be installed"
+        echo  "Aws cli is not installed and needs to be installed"
 
 else
         _dockercompose_Install=1
-        echo -e "Aws Cli compose is installed"
+        echo  "Aws Cli compose is installed"
 fi
 
-if [$_dockercompose_Install -eq 0]; then
-        echo -e "Installing aws cli"
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+if [ $_dockercompose_Install q 0 ]; then
+        echo  "Installing aws cli"
+        curl "https://awscli.amazonaws.com/awsclixe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
 	sudo ./aws/install
 fi
-
-
-
-
-
 
 
