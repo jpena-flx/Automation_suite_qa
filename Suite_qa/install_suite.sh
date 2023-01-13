@@ -1,5 +1,6 @@
 #!/bin/bash
 
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 function_logo_flex(){
 echo "  ___ _         _ _    _ _ _ _          ___ ___ _     "
     echo " | __| |_____ _(_) |__(_) (_) |_ _  _  / __| _ \ |    "
@@ -239,6 +240,8 @@ if [ $_aws_Install -eq 0 ]; then
         curl "https://awscli.amazonaws.com/awsclixe-linux-x86_64.zip" -o "awscliv2.zip"
 	unzip awscliv2.zip
 	sudo ./aws/install
+	aws configure 
+	
 fi
 
 # Install Java
@@ -278,6 +281,97 @@ if [ $_liquibase_Install -eq 0 ]; then
 	cd $HOME
         echo  "Installing liquibase"
 	sudo snap install liquibase
+fi
+
+echo  "******************************************************************************************************************************"
+echo  "------------------------------------------------AWS configure-----------------------------------------------------------------"
+echo  "******************************************************************************************************************************"
+
+flex_security="[flex-security]"
+profile="[profile flex-shared]"
+role_arn="arn:aws:iam::283907186399:role/QAs"
+AWS_HOME="/.aws"
+
+
+#Validating if aws folder exist.
+if [ -d $AWS_HOME ] 
+then
+	echo  "*********************************************************************"
+	echo  "Directory $AWS_HOME exist"
+	echo  "*********************************************************************${Color_Off}"
+else
+	mkdir .aws
+	echo  "*********************************************************************"
+	echo  "Error: Directory $AWS_HOME does not exists...."
+	echo  "*********************************************************************${Color_Off}"
+	exit
+fi
+
+#Creating file flex
+cd $AWS_HOME
+mkdir -p flex 
+#Creating credentials file.
+echo  "*********************************************************************"
+echo  "Creating credentials file"
+echo  "*********************************************************************"
+
+
+cd $AWS_HOME/flex
+echo  "*********************************************************************"
+echo  "Enter the access key id"
+echo  "*********************************************************************"
+read  aws_access_key_id
+echo  "*********************************************************************"
+echo  "Enter the secret access key"
+echo  "*********************************************************************"
+read  aws_secret_access_key
+
+printf "$flex_security\naws_access_key_id=$aws_access_key_id\naws_secret_access_key=$aws_secret_access_key\n" > credentials
+
+#Validating credentials file.
+FILE="$AWS_HOME/flex/credentials"
+if [ -f "$FILE" ]; then
+    echo  "*********************************************************************"
+	echo  "Credentials file was created"
+	echo  "*********************************************************************"
+	cat $FILE
+else 
+	echo  "*********************************************************************"
+	echo  "Credentials file was not created,please check the log."
+	echo  "*********************************************************************"
+	exit
+fi
+
+#Creating config file.
+echo  "*********************************************************************"
+echo  "Creating Config file"
+echo  "*********************************************************************"
+
+
+cd $AWS_HOME/flex
+echo  "*********************************************************************"
+echo  "Enter IDDELMFA aws"
+echo  "*********************************************************************"
+read IDDELMFA
+echo  "*********************************************************************"
+echo  "Enter Usuario aws"
+echo  "*********************************************************************"
+read USUARIO
+
+printf "$profile\noutput= json\nregion= us-east-1\nrole_arn= $role_arn \nsource_profile= flex-security\nmfa_serial= arn:aws:iam::$IDDELMFA:mfa/$USUARIO\n\n[default]\nregion= us-east-1\noutput= json\n" > config
+
+#Validating config file.
+FILE="$AWS_HOME/flex/config"
+if [ -f "$FILE" ]; then
+    echo  "*********************************************************************"
+	echo  "Config file was created"
+	echo  "*********************************************************************"
+	cat $FILE
+else 
+	echo  "*********************************************************************"
+	echo  "Config file was not created,please check the log."
+	echo  "*********************************************************************"
+	exit
 fi
 
 
