@@ -286,7 +286,7 @@ fi
 echo  "******************************************************************************************************************************"
 echo  "------------------------------------------------AWS configure-----------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
-
+<< 'Comment'
 flex_security="[flex-security]"
 profile="[profile flex-shared]"
 role_arn="arn:aws:iam::283907186399:role/QAs"
@@ -374,6 +374,112 @@ else
 	exit
 fi
 
+Comment
+
+echo  "******************************************************************************************************************************"
+echo  "-----------------------------------------------Cloning repositories-----------------------------------------------------------------"
+echo  "******************************************************************************************************************************"
+cd $HOME
+REPO_HOME="$HOME/Desktop"
+PLUG_AUTOMATION="plug-automation"
+PLUG_AUTOMATION_BASH_LIBRARY="plug-automation-bash-library"
+PLUG_AUTOMATION_LIBRARY="plug-automation-library"
+DEPLOYMENT_INIT_FILES="deployment-init-files"
+MOCK_SERVICE_ARGENTINA="mock-services-argentina"
+MOCK_SERVICE_COLOMBIA="mock-services-colombia"
+QA_AUTOMATION_CHALLENGUE="qa-automation-challenge "
 
 
+if [ -d $REPO_HOME ]; then
+	echo "Directory Desktop exist"
+else
+	echo "Directory Desktop does not exist and proceeds to create"
+	mkdir Desktop
+	echo "Created directory"
+fi
+cd $REPO_HOME
+mkdir -p code-flex
 
+if [ -d $REPO_HOME/code-flex ]; then
+        echo "Directory code-flex was created"
+else 
+        echo "Directory was not created, validate the log"
+fi
+
+echo "Cloning base repositories"
+cd $HOME/Desktop/code-flex
+echo "Validating repository $PLUG_AUTOMATION"
+if [ -d $PLUG_AUTOMATION ]; then
+	echo "The repository $PLUG_AUTOMATION already exists"
+	cd $PLUG_AUTOMATION
+	git pull
+else
+	echo "The repository $PLUG_AUTOMATION does not exist, proceed to clone it"
+	git clone git@github.com:FlexibilitySRL/plug-automation.git
+fi
+
+echo "Validating repository $PLUG_AUTOMATION_BASH_LIBRARY"
+cd $HOME/Desktop/code-flex
+if [ -d $PLUG_AUTOMATION_BASH_LIBRARY ]; then
+        echo "The repository $PLUG_AUTOMATION_BASH_LIBRARY already exists"
+	cd $PLUG_AUTOMATION_BASH_LIBRARY
+        git pull
+else
+        echo "The repository $PLUG_AUTOMATION_BASH_LIBRARY does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/plug-automation-bash-library.git
+fi
+
+echo "Validating repository $PLUG_AUTOMATION_LIBRARY"
+cd $HOME/Desktop/code-flex
+if [ -d $PLUG_AUTOMATION_LIBRARY ]; then
+        echo "The repository $PLUG_AUTOMATION_LIBRARY already exists"
+        cd $PLUG_AUTOMATION_LIBRARY
+        git pull
+else
+        echo "The repository $PLUG_AUTOMATION_LIBRARY does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/plug-automation-library.git
+fi
+
+echo "Validating repository $DEPLOYMENT_INIT_FILES"
+cd $HOME/Desktop/code-flex
+if [ -d $DEPLOYMENT_INIT_FILES ]; then
+        echo "The repository $DEPLOYMENT_INIT_FILES already exists"
+        cd $DEPLOYMENT_INIT_FILES
+        git pull
+else
+        echo "The repository $DEPLOYMENT_INIT_FILES does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/deployment-init-files.git
+fi
+
+echo "Validating repository $MOCK_SERVICE_ARGENTINA"
+cd $HOME/Desktop/code-flex
+if [ -d $MOCK_SERVICE_ARGENTINA ]; then
+        echo "The repository $MOCK_SERVICE_ARGENTINA already exists"
+        cd $MOCK_SERVICE_ARGENTINA
+        git pull
+else
+        echo "The repository $MOCK_SERVICE_ARGENTINA does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/mock-services-argentina
+
+fi
+
+echo "Validating repository $MOCK_SERVICE_COLOMBIA"
+cd $HOME/Desktop/code-flex
+if [ -d $MOCK_SERVICE_COLOMBIA ]; then
+        echo "The repository $MOCK_SERVICE_COLOMBIA already exists"
+        cd $MOCK_SERVICE_ARGENTINA
+        git pull
+else
+        echo "The repository $MOCK_SERVICE_COLOMBIA does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/mock-services-colombia
+fi
+echo "Validating repository $QA_AUTOMATION_CHALLENGUE"
+cd $HOME/Desktop/code-flex
+if [ -d $QA_AUTOMATION_CHALLENGUE ]; then
+        echo "The repository $QA_AUTOMATION_CHALLENGUE already exists"
+        cd $QA_AUTOMATION_CHALLENGUE
+        git pull
+else
+        echo "The repository $QA_AUTOMATION_CHALLENGUE does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/qa-automation-challenge.git
+fi
