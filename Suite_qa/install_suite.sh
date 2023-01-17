@@ -648,25 +648,28 @@ is_DockerCompose_Finished() {
     serviceUser="users-api"
     serviceCredentials="credentials-api"
     serviceTransactions="transactions-api"
-    serviceLimits="limits-api"
+    serviceClients="clients-api"
+    serviceAccounts="accounts-api"
     serviceCatalogs="catalogs-api"
     serviceRedis="redis"
     
     container_serviceUser="$(sudo docker-compose ps -q "$serviceUser")"
     container_serviceCredentials="$(sudo docker-compose ps -q "$serviceCredentials")"
     container_serviceTransactions="$(sudo docker-compose ps -q "$serviceTransactions")"
-    container_serviceLimits="$(sudo docker-compose ps -q "$serviceLimits")"
+    container_serviceClients="$(sudo docker-compose ps -q "$serviceClients=")"
+    container_serviceAccounts="$(sudo docker-compose ps -q "$serviceAccounts")"
     container_serviceCatalogs="$(sudo docker-compose ps -q "$serviceCatalogs")"
     container_serviceRedis="$(sudo docker-compose ps -q "$serviceRedis")"
 
     health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceUser")"
     health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCredentials")"
     health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceTransactions")"
-    health_statusLimits="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceLimits")"
+    healt_statusClients="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceClients")"
+    healt_statusAccounts="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceAccounts")"
     health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCatalogs")"
     health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceRedis")"
 
-    if [ "$health_statusUser" = $state ] && [ "$health_statusCredentials" = $state  ] && [ "$health_statusTransactions" = $state  ] && [ "$health_statusLimits" = $state  ] && [ "$health_statusCatalogs" = $state  ] && [ "$health_statusRedis" = $state ]; then
+    if [ "$health_statusUser" = $state ] && [ "$health_statusCredentials" = $state  ] && [ "$health_statusTransactions" = $state  ] && [ "$health_statusClients" = $state  ] && [ "$health_statusAccounts" = $state  ]  && [ "$health_statusCatalogs" = $state  ] && [ "$health_statusRedis" = $state ]; then
         return 0
     else
         return 1
