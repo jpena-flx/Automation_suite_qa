@@ -637,4 +637,64 @@ echo "Liquibase Ok"
 sleep 5
 
 
+is_DockerCompose_Finished() {
+    serviceUser="users-api"
+    serviceCredentials="credentials-api"
+    serviceTransactions="transactions-api"
+    serviceLimits="limits-api"
+    serviceCatalogs="catalogs-api"
+    serviceRedis="redis"
+    
+    container_serviceUser="$(sudo docker-compose ps -q "$serviceUser")"
+    container_serviceCredentials="$(sudo docker-compose ps -q "$serviceCredentials")"
+    container_serviceTransactions="$(sudo docker-compose ps -q "$serviceTransactions")"
+    container_serviceLimits="$(sudo docker-compose ps -q "$serviceLimits")"
+    container_serviceCatalogs="$(sudo docker-compose ps -q "$serviceCatalogs")"
+    container_serviceRedis="$(sudo docker-compose ps -q "$serviceRedis")"
+
+    health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceUser")"
+    health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCredentials")"
+    health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceTransactions")"
+    health_statusLimits="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceLimits")"
+    health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCatalogs")"
+    health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceRedis")"
+
+    if [ "$health_statusUser" = $state ] && [ "$health_statusCredentials" = $state  ] && [ "$health_statusTransactions" = $state  ] && [ "$health_statusLimits" = $state  ] && [ "$health_statusCatalogs" = $state  ] && [ "$health_statusRedis" = $state ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+while ! is_DockerCompose_Finished; do sleep 1; done
+
+echo -e "${BYellow}*********************************************************************"
+echo -e "${BYellow}All containers are UP."
+echo -e "${BYellow}*********************************************************************${Color_Off}"
+
+sleep 5
+
+
+#Executing BM
+echo -e "${BPurple}******************************************************************************************************************************"
+echo -e "${BPurple}------------------------------------------------STEP 10 - Executing BM----------------------------------------------"
+echo -e "${BPurple}******************************************************************************************************************************${Color_Off}"
+
+bm=business-manager
+
+cd $SCRIPT_DIR
+cd ..
+cd $bm
+sudo mvn -gs /home/jorestes/.m2/settings.xml spring-boot:run -Dspring.profiles.active=qa -DPROJECT_SQL_SERVER=localhost  -DPROJECT_SQL_PORT=3306  -DPROJECT_SQL_DATABASE=lmb  -DPROJECT_TIME_ZONE=America/Bogota  -DPROJECT_SQL_USER=root  -DPROJECT_SQL_PASSWORD=1Qaz2wsx--  -DMAX_POOL_DB=10  -DREDIS_SERVER=localhost  -DREDIS_PORT=6379 -Djava.awt.headless=false
+
+
+
+
+read -n1 -s -r -p $'Press any Key to Exit..\n' key
+
+if [ "$key" = ' ' ]; then
+    exit
+fi
+) | tee output.log
+
 
