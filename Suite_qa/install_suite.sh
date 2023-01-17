@@ -645,12 +645,12 @@ cd $SCRIPT_DIR
 sudo docker-compose --profile ach up --detach --quiet-pull --force-recreate --no-log-prefix
 
 is_DockerCompose_Finished() {
-    serviceUser="users-api"
-    serviceCredentials="credentials-api"
-    serviceTransactions="transactions-api"
-    serviceClients="clients-api"
-    serviceAccounts="accounts-api"
-    serviceCatalogs="catalogs-api"
+    serviceUser="suite_qa-users-api"
+    serviceCredentials="suite_qa-credentials-api"
+    serviceTransactions="suite_qa-transactions-api"
+    serviceClients="suite_qa-clients-api"
+    serviceAccounts="suite_qa-accounts-api"
+    serviceCatalogs="suite_qa-catalogs-api"
     serviceRedis="redis"
     
     container_serviceUser="$(sudo docker-compose ps -q "$serviceUser")"
