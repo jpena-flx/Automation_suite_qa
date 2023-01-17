@@ -656,7 +656,7 @@ is_DockerCompose_Finished() {
     container_serviceUser="$(sudo docker-compose ps -q "$serviceUser")"
     container_serviceCredentials="$(sudo docker-compose ps -q "$serviceCredentials")"
     container_serviceTransactions="$(sudo docker-compose ps -q "$serviceTransactions")"
-    container_serviceClients="$(sudo docker-compose ps -q "$serviceClients=")"
+    container_serviceClients="$(sudo docker-compose ps -q "$serviceClients")"
     container_serviceAccounts="$(sudo docker-compose ps -q "$serviceAccounts")"
     container_serviceCatalogs="$(sudo docker-compose ps -q "$serviceCatalogs")"
     container_serviceRedis="$(sudo docker-compose ps -q "$serviceRedis")"
