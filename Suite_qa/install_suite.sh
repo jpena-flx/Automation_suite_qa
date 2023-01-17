@@ -641,6 +641,9 @@ echo  "-----------------------------------------------Runnning legos------------
 echo  "******************************************************************************************************************************"
 
 cd $SCRIPT_DIR
+
+sudo docker-compose --profile ach up --detach --quiet-pull --force-recreate --no-log-prefix
+
 is_DockerCompose_Finished() {
     serviceUser="users-api"
     serviceCredentials="credentials-api"
