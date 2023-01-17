@@ -376,4 +376,79 @@ fi
 
 
 
+#config variables 
+
+cd $HOME
+
+#environment variable java
+if [ "$JAVA_HOME" ]; then
+    echo  "*********************************************************************"
+	echo  "Enviroment variable was created"
+	echo  "*********************************************************************"
+	echo $JAVA_HOME
+else
+   echo  "*********************************************************************"
+	echo  "environment variable is not created"
+	echo  "*********************************************************************"
+   	printf "export JAVA_HOME=/bin/java\n" >> .bashrc
+fi
+
+
+
+#environment variable aws
+
+
+if [ "$AWS_SHARED_CREDENTIALS_FILE" ]; then
+      echo  "*********************************************************************"
+	echo  "Enviroment variable was created $AWS_SHARED_CREDENTIALS_FILE"
+	echo  "*********************************************************************"
+
+else
+    echo  "*********************************************************************"
+	echo  "environment variable is not created"
+	echo  "*********************************************************************"
+    printf "export AWS_SHARED_CREDENTIALS_FILE"=.aws/flex/credentials"\n" >> .bashrc
+fi
+
+if [ "$AWS_CONFIG_FILE" ]; then
+    echo  "*********************************************************************"
+	echo  "Enviroment variable was created $AWS_CONFIG_FILE"
+	echo  "*********************************************************************"
+else
+   echo  "*********************************************************************"
+	echo  "environment variable is not created"
+	echo  "*********************************************************************"
+    printf "export AWS_CONFIG_FILE=".aws/flex/config"\n" >> .bashrc
+fi
+
+if [ "$PROJECT_SHORT" ]; then
+    echo  "*********************************************************************"
+	echo  "Enviroment variable was created $PROJECT_SHORT"
+	echo  "*********************************************************************"
+else
+    echo  "*********************************************************************"
+	echo  "environment variable is not created"
+	echo  "*********************************************************************"
+    printf "export PROJECT_SHORT="flex"\n" >> .bashrc
+fi
+
+#Login to AWS - FLEXI.
+echo -e "*********************************************************************"
+echo -e "Login to AWS"
+echo -e "*********************************************************************"
+
+cd $AWS_HOME
+#Validation
+if aws ecr get-login-password --profile flex-shared --region us-east-1 |sudo docker login --username AWS --password-stdin 283907186399.dkr.ecr.us-east-1.amazonaws.com/plug | grep -q 'Login Succeeded'; then
+    echo -e "*********************************************************************"
+    echo -e "Login Succeeded."
+    echo -e "*********************************************************************"
+else
+    echo -e "*********************************************************************"
+    echo -e "Error in Login,please check the log."
+    echo -e "*********************************************************************"
+fi
+
+
+
 
