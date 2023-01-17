@@ -590,8 +590,6 @@ echo  "*************************************************************************
 
 state="running"
 stateHealthy="healthy"
-
-SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" 2> /dev/null && pwd )
 cd $SCRIPT_DIR
 
 sudo docker-compose up db --detach --quiet-pull --force-recreate --no-log-prefix
@@ -616,6 +614,7 @@ is_MySql_Finished() {
 while ! is_MySql_Finished; do sleep 1; done
 echo "Mysql is Up"
 
+
 echo  "******************************************************************************************************************************"
 echo  "-----------------------------------------------Runnning liquibase-------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
@@ -624,7 +623,7 @@ username="root"
 password="1Qaz2wsx--"
 contexts="local"
 DschemaName="tutorial"
-url="jdbc:mysql://127.0.0.1:3306/lmb?zeroDateTimeBehavior=convertToNull&useSSL=false"
+url="jdbc:mysql://127.0.0.1:3306/tutorial?zeroDateTimeBehavior=convertToNull&useSSL=false"
 changeLogFile="master.xml"
 classpath="mysql-connector-java-8.0.15.jar"
 changelog="db.changelog"

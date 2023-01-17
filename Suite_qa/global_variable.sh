@@ -11,9 +11,12 @@ if [ "$JAVA_HOME" ]; then
 	echo $JAVA_HOME
 else
    echo  "*********************************************************************"
-	echo  "environment variable is not created"
+	echo  "environment variable JAVA_HOME is not created"
 	echo  "*********************************************************************"
+	echo  "environment variable JAVA_HOME creating"
    	printf "export JAVA_HOME=/bin/java\n" >> .bashrc
+   	echo $JAVA_HOME
+   	
 fi
 
 
@@ -55,5 +58,5 @@ else
     printf "export PROJECT_SHORT="flex"\n" >> .bashrc
 fi
 
-
+printf "export PATH=$PATH:/snap/bin/liquibase" >> .bashrc
 
