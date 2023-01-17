@@ -286,7 +286,7 @@ fi
 echo  "******************************************************************************************************************************"
 echo  "------------------------------------------------AWS configure-----------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
-
+<< 'Comment'
 flex_security="[flex-security]"
 profile="[profile flex-shared]"
 role_arn="arn:aws:iam::283907186399:role/QAs"
@@ -374,9 +374,7 @@ else
 	exit
 fi
 
-
-
-<<<<<<< HEAD
+Comment
 #config variables 
 
 cd $HOME
@@ -452,7 +450,6 @@ fi
 
 
 
-=======
 echo  "******************************************************************************************************************************"
 echo  "-----------------------------------------------Cloning repositories-----------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
@@ -465,7 +462,7 @@ DEPLOYMENT_INIT_FILES="deployment-init-files"
 MOCK_SERVICE_ARGENTINA="mock-services-argentina"
 MOCK_SERVICE_COLOMBIA="mock-services-colombia"
 QA_AUTOMATION_CHALLENGUE="qa-automation-challenge "
-
+DELIVERY_MANAGEMENT='delivery-management'
 
 if [ -d $REPO_HOME ]; then
 	echo "Directory Desktop exist"
@@ -482,7 +479,7 @@ if [ -d $REPO_HOME/code-flex ]; then
 else 
         echo "Directory was not created, validate the log"
 fi
->>>>>>> c45789faa73759740379a18563f0551ef41f99eb
+
 
 echo "Cloning base repositories"
 cd $HOME/Desktop/code-flex
@@ -561,3 +558,73 @@ else
         echo "The repository $QA_AUTOMATION_CHALLENGUE does not exist, proceed to clone it"
         git clone git@github.com:FlexibilitySRL/qa-automation-challenge.git
 fi
+
+echo "Validating repository $DELIVERY_MANAGEMENT"
+cd $HOME/Desktop/code-flex
+if [ -d $DELIVERY_MANAGEMENT ]; then
+        echo "The repository $DELIVERY_MANAGEMENT already exists"
+        cd $DELIVERY_MANAGEMENT
+        git pull
+else
+        echo "The repository $DELIVERY_MANAGEMENT does not exist, proceed to clone it"
+        git clone git@github.com:FlexibilitySRL/delivery-management.git
+fi
+
+
+
+
+echo  "******************************************************************************************************************************"
+echo  "-----------------------------------------------Runnning Mysql-----------------------------------------------------------------"
+echo  "******************************************************************************************************************************"
+
+state="running"
+stateHealthy="healthy"
+
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" 2> /dev/null && pwd )
+cd $SCRIPT_DIR
+
+sudo docker-compose up db --detach --quiet-pull --force-recreate --no-log-prefix
+
+
+is_MySql_Finished() {
+    serviceDb="db"
+
+    container_serviceDb="$(sudo docker-compose ps -q "$serviceDb")"
+
+
+    health_statusDb="$(sudo docker inspect -f "{{.State.Health.Status}}" "$container_serviceDb")"
+
+
+    if [ "$health_statusDb" = $stateHealthy ] ; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+while ! is_MySql_Finished; do sleep 1; done
+echo "Mysql is Up"
+
+echo  "******************************************************************************************************************************"
+echo  "-----------------------------------------------Runnning liquibase-------------------------------------------------------------"
+echo  "******************************************************************************************************************************"
+
+username="root"
+password="1Qaz2wsx--"
+contexts="local"
+DschemaName="tutorial"
+url="jdbc:mysql://127.0.0.1:3306/lmb?zeroDateTimeBehavior=convertToNull&useSSL=false"
+changeLogFile="master.xml"
+classpath="mysql-connector-java-8.0.15.jar"
+changelog="db.changelog"
+
+cd $HOME/Desktop/code-flex/delivery-management/demos/db_scripts
+
+liquibase --classpath=$classpath --changeLogFile=$changeLogFile --url=$url --username=$username --password=$password --contexts=$contexts update -DschemaName=$DschemaName
+
+echo "Liquibase Ok"
+
+sleep 5
+
+
+
