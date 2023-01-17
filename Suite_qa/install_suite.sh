@@ -645,13 +645,15 @@ cd $SCRIPT_DIR
 sudo docker-compose --profile ach up --detach --quiet-pull --force-recreate --no-log-prefix
 
 is_DockerCompose_Finished() {
-    serviceUser="suite_qa-users-api"
-    serviceCredentials="suite_qa-credentials-api"
-    serviceTransactions="suite_qa-transactions-api"
-    serviceClients="suite_qa-clients-api"
-    serviceAccounts="suite_qa-accounts-api"
-    serviceCatalogs="suite_qa-catalogs-api"
+    serviceUser="users-api"
+    serviceCredentials="credentials-api"
+    serviceTransactions="transactions-api"
+    serviceClients="clients-api"
+    serviceAccounts="accounts-api"
+    serviceCatalogs="catalogs-api"
     serviceRedis="redis"
+    suiteQa="suite_qa-"
+
     
     container_serviceUser="$(sudo docker-compose ps -q "$serviceUser")"
     container_serviceCredentials="$(sudo docker-compose ps -q "$serviceCredentials")"
@@ -661,13 +663,13 @@ is_DockerCompose_Finished() {
     container_serviceCatalogs="$(sudo docker-compose ps -q "$serviceCatalogs")"
     container_serviceRedis="$(sudo docker-compose ps -q "$serviceRedis")"
 
-    health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceUser")"
-    health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCredentials")"
-    health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceTransactions")"
-    healt_statusClients="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceClients")"
-    healt_statusAccounts="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceAccounts")"
-    health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCatalogs")"
-    health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceRedis")"
+    health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceUser")"
+    health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceCredentials")"
+    health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceTransactions")"
+    healt_statusClients="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceClients")"
+    healt_statusAccounts="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceAccounts")"
+    health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceCatalogs")"
+    health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceRedis")"
 
     if [ "$health_statusUser" = $state ] && [ "$health_statusCredentials" = $state  ] && [ "$health_statusTransactions" = $state  ] && [ "$health_statusClients" = $state  ] && [ "$health_statusAccounts" = $state  ]  && [ "$health_statusCatalogs" = $state  ] && [ "$health_statusRedis" = $state ]; then
         return 0
