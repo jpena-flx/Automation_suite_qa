@@ -678,23 +678,18 @@ is_DockerCompose_Finished() {
 
 while ! is_DockerCompose_Finished; do sleep 1; done
 
-echo -e "${BYellow}*********************************************************************"
-echo -e "${BYellow}All containers are UP."
-echo -e "${BYellow}*********************************************************************${Color_Off}"
+echo  "All containers are UP."
 
 sleep 5
 
 
 #Executing BM
-echo -e "${BPurple}******************************************************************************************************************************"
-echo -e "${BPurple}------------------------------------------------STEP 10 - Executing BM----------------------------------------------"
-echo -e "${BPurple}******************************************************************************************************************************${Color_Off}"
+echo "******************************************************************************************************************************"
+echo "------------------------------------------------------------------- Executing BM----------------------------------------------"
+echo "******************************************************************************************************************************"
 
-bm=business-manager
+cd $HOME/Desktop/code-flex/delivery-management/demos
 
-cd $SCRIPT_DIR
-cd ..
-cd $bm
 sudo mvn -gs /home/jorestes/.m2/settings.xml spring-boot:run -Dspring.profiles.active=qa -DPROJECT_SQL_SERVER=localhost  -DPROJECT_SQL_PORT=3306  -DPROJECT_SQL_DATABASE=lmb  -DPROJECT_TIME_ZONE=America/Bogota  -DPROJECT_SQL_USER=root  -DPROJECT_SQL_PASSWORD=1Qaz2wsx--  -DMAX_POOL_DB=10  -DREDIS_SERVER=localhost  -DREDIS_PORT=6379 -Djava.awt.headless=false
 
 
