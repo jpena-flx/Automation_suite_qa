@@ -713,7 +713,7 @@ python setup.py develop
 pre-commit install
 
 guake -n $HOME/Desktop/code-flex/qa-automation-challenge
-guake -r "Jimmy"
+guake -r "TERMINAL_TEST"
 guake -e "source venv/bin/activate"
 guake -e "pipenv install --skip-lock"
 
