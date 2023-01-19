@@ -192,7 +192,7 @@ if [ $_docker_Install -eq 0 ]; then
         echo  "Installing Docker"
 	sudo usermod -a -G docker $USER
         sudo apt update
-   	 sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
+   	sudo apt install apt-transport-https ca-certificates curl software-properties-common -y
     	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
     	echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
     	sudo apt update
@@ -615,6 +615,9 @@ while ! is_MySql_Finished; do sleep 1; done
 echo "Mysql is Up"
 
 
+
+sudo docker start mysql1
+
 echo  "******************************************************************************************************************************"
 echo  "-----------------------------------------------Runnning liquibase-------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
@@ -628,7 +631,7 @@ changeLogFile="master.xml"
 classpath="mysql-connector-java-8.0.15.jar"
 changelog="db.changelog"
 
-cd $HOME/Desktop/code-flex/delivery-management/demos/db_scripts
+cd $HOME/Desktop/code-flex/delivery-management/tutorial/db_scripts
 
 liquibase --classpath=$classpath --changeLogFile=$changeLogFile --url=$url --username=$username --password=$password --contexts=$contexts update -DschemaName=$DschemaName
 
@@ -662,16 +665,17 @@ is_DockerCompose_Finished() {
     container_serviceAccounts="$(sudo docker-compose ps -q "$serviceAccounts")"
     container_serviceCatalogs="$(sudo docker-compose ps -q "$serviceCatalogs")"
     container_serviceRedis="$(sudo docker-compose ps -q "$serviceRedis")"
+    
+   
+    health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceUser")"
+    health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCredentials")"
+    health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceTransactions")"
+    healt_statusClients="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceClients")"
+    healt_statusAccounts="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceAccounts")"
+    health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceCatalogs")"
+    health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$container_serviceRedis")"
 
-    health_statusUser="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceUser")"
-    health_statusCredentials="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceCredentials")"
-    health_statusTransactions="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceTransactions")"
-    healt_statusClients="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceClients")"
-    healt_statusAccounts="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceAccounts")"
-    health_statusCatalogs="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceCatalogs")"
-    health_statusRedis="$(sudo docker inspect -f "{{.State.Status}}" "$suiteQa""$container_serviceRedis")"
-
-    if [ "$health_statusUser" = $state ] && [ "$health_statusCredentials" = $state  ] && [ "$health_statusTransactions" = $state  ] && [ "$health_statusClients" = $state  ] && [ "$health_statusAccounts" = $state  ]  && [ "$health_statusCatalogs" = $state  ] && [ "$health_statusRedis" = $state ]; then
+    if [ "$health_statusUser" = $state ]; then
         return 0
     else
         return 1
@@ -690,12 +694,28 @@ echo "**************************************************************************
 echo "------------------------------------------------------------------- Executing BM----------------------------------------------"
 echo "******************************************************************************************************************************"
 
-cd $HOME/Desktop/code-flex/delivery-management/demos
+cd $HOME/Desktop/code-flex/delivery-management/tutorial/business-manager
+guake &&
+guake  -n $HOME/Desktop/code-flex/delivery-management/tutorial/business-manager
+guake -r "bm"
+guake -e "
+sudo mvn -gs /home/luis/.m2/settings.xml spring-boot:run -Dspring.profiles.active=qa -DPROJECT_SQL_SERVER=localhost  -DPROJECT_SQL_PORT=3306  -DPROJECT_SQL_DATABASE=tutorial  -DPROJECT_TIME_ZONE=America/Bogota  -DPROJECT_SQL_USER=root  -DPROJECT_SQL_PASSWORD=1Qaz2wsx--  -DMAX_POOL_DB=10  -DREDIS_SERVER=localhost  -DREDIS_PORT=6379 -Djava.awt.headless=false
+"
 
-sudo mvn -gs /home/jorestes/.m2/settings.xml spring-boot:run -Dspring.profiles.active=qa -DPROJECT_SQL_SERVER=localhost  -DPROJECT_SQL_PORT=3306  -DPROJECT_SQL_DATABASE=lmb  -DPROJECT_TIME_ZONE=America/Bogota  -DPROJECT_SQL_USER=root  -DPROJECT_SQL_PASSWORD=1Qaz2wsx--  -DMAX_POOL_DB=10  -DREDIS_SERVER=localhost  -DREDIS_PORT=6379 -Djava.awt.headless=false
+cd $HOME/Desktop/code-flex/qa-automation-challenge
+sudo apt-get install python3.8
+sudo apt-get install python3.8-dev
+sudo apt-get install python3-pip
+sudo apt-get install python3-virtualenv
 
+virtualenv venv --python=/usr/bin/python3.8
+source venv/bin/activate
+pip install resources/plug_test_lib-2.53.0-py3-none-any.whl
+python setup.py develop
+pre-commit install
 
-
+guake -n $HOME/Desktop/code-flex/qa-automation-challenge
+guake -r "Jimmy"
 
 read -n1 -s -r -p $'Press any Key to Exit..\n' key
 
