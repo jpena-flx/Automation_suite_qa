@@ -6,7 +6,8 @@ services:
       environment:
         - MYSQL_ROOT_PASSWORD=1Qaz2wsx--
         - MYSQL_DATABASE=tutorial
-        - MYSQL_ROOT_HOST=%
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=p1Qaz2wsx--
       ports:
         - 3306:3306
       healthcheck:
