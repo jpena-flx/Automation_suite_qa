@@ -137,7 +137,7 @@ services:
       - '--server.port=8078'
       
   catalogs-api:
-    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/catalogs-api:v2.2.0'
+    image: '283907186399.dkr.ecr.us-east-1.amazonaws.com/plug/catalogs-api:v2.3.1'
     environment:
       - spring.profiles.active=qa
       - java.awt.headless=false
@@ -151,11 +151,12 @@ services:
       - REDIS_SERVER=127.0.0.1
       - REDIS_PORT=6379
       - PROJECT_CACHE_TYPE=redis
+      - server.servlet.context-path=/catalogs
     network_mode: host
     entrypoint:
       - java
       - '-jar'
-      - catalogs-api-2.2.0-SNAPSHOT.jar
+      - catalogs-api-2.3.1.jar
       - '--server.port=8097' 
 
   dozzle:

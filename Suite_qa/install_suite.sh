@@ -616,8 +616,6 @@ echo "Mysql is Up"
 
 
 
-sudo docker start mysql1
-
 echo  "******************************************************************************************************************************"
 echo  "-----------------------------------------------Runnning liquibase-------------------------------------------------------------"
 echo  "******************************************************************************************************************************"
@@ -699,7 +697,7 @@ guake &&
 guake  -n $HOME/Desktop/code-flex/delivery-management/tutorial/business-manager
 guake -r "bm"
 guake -e "
-sudo mvn -gs /home/luis/.m2/settings.xml spring-boot:run -Dspring.profiles.active=qa -DPROJECT_SQL_SERVER=localhost  -DPROJECT_SQL_PORT=3306  -DPROJECT_SQL_DATABASE=tutorial  -DPROJECT_TIME_ZONE=America/Bogota  -DPROJECT_SQL_USER=root  -DPROJECT_SQL_PASSWORD=1Qaz2wsx--  -DMAX_POOL_DB=10  -DREDIS_SERVER=localhost  -DREDIS_PORT=6379 -Djava.awt.headless=false
+mvn clean compile spring-boot:run -Dspring.profiles.active=qa -Dserver.port=8080 -DPROJECT_SQL_SERVER=127.0.0.1 -DPROJECT_SQL_PORT=3306 -DPROJECT_SQL_DATABASE=tutorial -DPROJECT_SQL_USER=root -DPROJECT_SQL_PASSWORD=1Qaz2wsx-- -Djava.awt.headless=false -DMAX_POOL_DB=5 -DPROJECT_TIME_ZONE=America/Argentina/Buenos_Aires -DMODULE_URL=http://localhost:8080 -DREDIS_SERVER=localhost -DREDIS_PORT=6379 -DPROJECT_CACHE_TYPE=redis
 "
 
 cd $HOME/Desktop/code-flex/qa-automation-challenge
@@ -716,6 +714,8 @@ pre-commit install
 
 guake -n $HOME/Desktop/code-flex/qa-automation-challenge
 guake -r "Jimmy"
+guake -e "source venv/bin/activate"
+guake -e "pipenv install --skip-lock"
 
 read -n1 -s -r -p $'Press any Key to Exit..\n' key
 
